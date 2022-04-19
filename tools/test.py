@@ -147,7 +147,11 @@ def main():
         ]
         cfg.data.test.pipeline[1].flip = True
     cfg.model.pretrained = None
-    cfg.data.test.test_mode = True
+    if isinstance(cfg.data.test, dict):
+        cfg.data.test.test_mode = True
+    elif isinstance(cfg.data.test, list):
+        for ds_cfg in cfg.data.test:
+            ds_cfg.test_mode = True
 
     if args.gpu_id is not None:
         cfg.gpu_ids = [args.gpu_id]
